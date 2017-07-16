@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_item_list)
+        setContentView(R.layout.activity_main)
         supportActionBar!!.hide()
         val mRecyclerView = findViewById<RecyclerView>(R.id.list)
         mRecyclerView.setHasFixedSize(true)
