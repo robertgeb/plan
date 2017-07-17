@@ -27,7 +27,7 @@ class MyItemRecyclerViewAdapter(private val mValues: List<DummyItem>, private va
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mItem = mValues[position]
-        holder.mIdView.text = mValues[position].id
+        //holder.mIdView.text = mValues[position].id
         holder.mContentView.text = mValues[position].content
 
         holder.mView.setOnClickListener {
@@ -36,12 +36,12 @@ class MyItemRecyclerViewAdapter(private val mValues: List<DummyItem>, private va
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView
+        //val mIdView: TextView
         val mContentView: TextView
         var mItem: DummyItem? = null
 
         init {
-            mIdView = mView.findViewById<View>(R.id.id) as TextView
+            //mIdView = mView.findViewById<View>(R.id.id) as TextView
             mContentView = mView.findViewById<View>(R.id.content) as TextView
         }
 
