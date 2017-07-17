@@ -10,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.gebhardt.plan.dummy.DummyContent
-import com.gebhardt.plan.dummy.DummyContent.DummyItem
+import com.gebhardt.plan.plan.PlanContent
+import com.gebhardt.plan.plan.PlanContent.PlanItem
 
 /**
  * A fragment representing a list of Items.
@@ -24,7 +24,7 @@ import com.gebhardt.plan.dummy.DummyContent.DummyItem
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class ItemFragment : Fragment() {
+class PlanFragment : Fragment() {
     // TODO: Customize parameters
     private var mColumnCount = 1
     private var mListener: OnListFragmentInteractionListener? = null
@@ -50,7 +50,7 @@ class ItemFragment : Fragment() {
             } else {
                 recyclerView.setLayoutManager(GridLayoutManager(context, mColumnCount))
             }
-            recyclerView.setAdapter(MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener))
+            recyclerView.setAdapter(PlanRecyclerViewAdapter(PlanContent.ITEMS, mListener))
         }
         return view
     }
@@ -81,7 +81,7 @@ class ItemFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem)
+        fun onListFragmentInteraction(item: PlanItem)
     }
 
     companion object {
@@ -90,8 +90,8 @@ class ItemFragment : Fragment() {
         private val ARG_COLUMN_COUNT = "column-count"
 
         // TODO: Customize parameter initialization
-        fun newInstance(columnCount: Int): ItemFragment {
-            val fragment = ItemFragment()
+        fun newInstance(columnCount: Int): PlanFragment {
+            val fragment = PlanFragment()
             val args = Bundle()
             args.putInt(ARG_COLUMN_COUNT, columnCount)
             fragment.arguments = args

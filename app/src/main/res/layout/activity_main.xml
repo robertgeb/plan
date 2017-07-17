@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.gebhardt.plan.MainActivity">
+    tools:context="com.gebhardt.plan.PlanListActivity">
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.gebhardt.plan.ItemFragment"
+        tools:context="com.gebhardt.plan.PlanFragment"
         tools:listitem="@layout/fragment_item"
         android:scrollbars="vertical"/>
 
@@ -26,7 +26,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/newPlanText"
+            android:id="@+id/add_plan_tv"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:inputType="text"
@@ -41,6 +41,7 @@
             android:layout_gravity="bottom"/>
 
         <Button
+            android:id="@+id/add_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:text="@string/plus"

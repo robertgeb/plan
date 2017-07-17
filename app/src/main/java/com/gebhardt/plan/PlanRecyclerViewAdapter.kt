@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-import com.gebhardt.plan.ItemFragment.OnListFragmentInteractionListener
-import com.gebhardt.plan.dummy.DummyContent.DummyItem
+import com.gebhardt.plan.PlanFragment.OnListFragmentInteractionListener
+import com.gebhardt.plan.plan.PlanContent.PlanItem
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [PlanItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
-class MyItemRecyclerViewAdapter(private val mValues: List<DummyItem>, private val mListener: OnListFragmentInteractionListener?) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+class PlanRecyclerViewAdapter(private val mValues: List<PlanItem>, private val mListener: OnListFragmentInteractionListener?) : RecyclerView.Adapter<PlanRecyclerViewAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
         return mValues.size
     }
@@ -38,7 +38,7 @@ class MyItemRecyclerViewAdapter(private val mValues: List<DummyItem>, private va
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         //val mIdView: TextView
         val mContentView: TextView
-        var mItem: DummyItem? = null
+        var mItem: PlanItem? = null
 
         init {
             //mIdView = mView.findViewById<View>(R.id.id) as TextView
