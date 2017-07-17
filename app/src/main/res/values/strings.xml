@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Plan</string>
+    <string name="new_plan_hint">Novo plano</string>
+    <string name="new_plan_button_text">+</string>
 </resources>
