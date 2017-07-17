@@ -26,19 +26,19 @@ class PlanRecyclerViewAdapter(private val mValues: List<PlanItem>, private val m
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = mValues[position]
+        holder.plan = mValues[position]
         //holder.mIdView.text = mValues[position].id
         holder.mContentView.text = mValues[position].content
 
         holder.mView.setOnClickListener {
-            mListener?.onListFragmentInteraction(holder.mItem!!)
+            mListener?.onListFragmentInteraction(holder.plan!!)
         }
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         //val mIdView: TextView
         val mContentView: TextView
-        var mItem: PlanItem? = null
+        var plan: PlanItem? = null
 
         init {
             //mIdView = mView.findViewById<View>(R.id.id) as TextView
