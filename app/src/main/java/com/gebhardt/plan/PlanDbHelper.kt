@@ -1,8 +1,10 @@
 package com.gebhardt.plan
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.gebhardt.plan.plan.PlanContent
 
 /**
  * Created by robert on 7/17/17.
@@ -34,5 +36,38 @@ class PlanDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
         val DATABASE_NAME = "Plan.db"
+    }
+
+    fun findAll() : List<PlanContent.PlanItem>{
+        val planList = ArrayList<PlanContent.PlanItem>()
+        val projection = arrayOf<String>(PlanContract.PlanEntry._ID, PlanContract.PlanEntry.COLUMN_NAME_CONTENT)
+        val result = this.readableDatabase.query(
+                PlanContract.PlanEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null)
+        while (result.moveToNext()){
+            val content = result.getString(result.getColumnIndex(PlanContract.PlanEntry.COLUMN_NAME_CONTENT))
+            val id = result.getInt(result.getColumnIndex(PlanContract.PlanEntry._ID))
+            planList.add(PlanContent.PlanItem(id, content))
+        }
+        result.close()
+        return planList
+    }
+
+    fun insert(content : String) : PlanContent.PlanItem{
+        val values = ContentValues()
+        values.put(PlanContract.PlanEntry.COLUMN_NAME_CONTENT, content)
+        val id  = this.writableDatabase.insert(PlanContract.PlanEntry.TABLE_NAME, null, values)
+        return PlanContent.PlanItem(id.toInt(), content)
+    }
+
+    fun delete(plan : PlanContent.PlanItem){
+        val selection = PlanContract.PlanEntry._ID+ " = ?"
+        val selectionArgs = arrayOf(plan.id.toString())
+        this.writableDatabase.delete(PlanContract.PlanEntry.TABLE_NAME, selection, selectionArgs)
     }
 }

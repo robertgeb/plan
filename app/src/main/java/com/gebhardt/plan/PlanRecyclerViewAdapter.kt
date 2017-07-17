@@ -12,7 +12,6 @@ import com.gebhardt.plan.plan.PlanContent.PlanItem
 /**
  * [RecyclerView.Adapter] that can display a [PlanItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class PlanRecyclerViewAdapter(private val mValues: List<PlanItem>, private val mListener: OnListFragmentInteractionListener?) : RecyclerView.Adapter<PlanRecyclerViewAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
@@ -36,7 +35,6 @@ class PlanRecyclerViewAdapter(private val mValues: List<PlanItem>, private val m
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        //val mIdView: TextView
         val mContentView: TextView
         var plan: PlanItem? = null
 

@@ -7,10 +7,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
 import com.gebhardt.plan.plan.PlanContent
-import java.nio.file.Files.delete
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 
@@ -21,40 +19,26 @@ class PlanListActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         supportActionBar!!.hide()
 
-        findViewById<Button>(R.id.add_btn).setOnClickListener {
-            createNewPlan()
-        }
-        initDb()
+        // Configurando eventos
+        initEvents()
+
+        // Recuperando dados do banco
+        PlanContent.ITEMS.addAll(PlanDbHelper(this).findAll())
+
+        // Criando View
         initRecyclerView()
     }
 
-    private fun initDb(){
-        val db = PlanDbHelper(this)
-        val projection = arrayOf<String>(PlanContract.PlanEntry._ID, PlanContract.PlanEntry.COLUMN_NAME_CONTENT)
-        val result = db.readableDatabase.query(
-                PlanContract.PlanEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null)
-
-        while (result.moveToNext()){
-            val content = result.getString(result.getColumnIndex(PlanContract.PlanEntry.COLUMN_NAME_CONTENT))
-            val id = result.getInt(result.getColumnIndex(PlanContract.PlanEntry._ID))
-            PlanContent.addItem(PlanContent.PlanItem(id, content))
+    private fun initEvents() {
+        // Criar novo ao clicar no botao
+        add_btn.setOnClickListener {
+            createNewPlan()
         }
 
-        result.close()
-    }
+        // Adicionar ao clicar Enter no teclado
+        add_plan_tv.setOnEditorActionListener { textView, i, keyEvent -> createNewPlan() }
 
-    private fun initRecyclerView(){
-        val mRecyclerView = findViewById<RecyclerView>(R.id.list)
-        mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mRecyclerView.adapter = PlanRecyclerViewAdapter(PlanContent.ITEMS, null)
-
+        // Deletar ao mover para direita
         val mIth = ItemTouchHelper(
                 object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,
                         ItemTouchHelper.RIGHT) {
@@ -69,38 +53,44 @@ class PlanListActivity : AppCompatActivity(){
                     }
                 })
 
-        mIth.attachToRecyclerView(mRecyclerView)
+        mIth.attachToRecyclerView(list_rv)
     }
 
-    private fun createNewPlan(){
-        val contentEditText = findViewById<EditText>(R.id.add_plan_tv)
-        val content = contentEditText.text.toString()
+    private fun initRecyclerView(){
+        list_rv.setHasFixedSize(true)
+        list_rv.layoutManager = LinearLayoutManager(this)
+        list_rv.adapter = PlanRecyclerViewAdapter(PlanContent.ITEMS, null)
+    }
 
+    private fun createNewPlan() : Boolean{
+        val content = add_plan_tv.text.toString()
+        // Se não tiver nada escrito
         if (content == "")
-            return
+            return false
 
-        contentEditText.setText("")
+        // Esvazia a caixa de texto
+        add_plan_tv.setText("")
 
-        val db = PlanDbHelper(this)
-        val values = ContentValues()
-        values.put(PlanContract.PlanEntry.COLUMN_NAME_CONTENT, content)
-        val id  = db.writableDatabase.insert(PlanContract.PlanEntry.TABLE_NAME, null, values)
+        // Adiciona no banco de dados
+        val plan = PlanDbHelper(this).insert(content)
 
-
-        val plan = PlanContent.PlanItem(id.toInt(), content)
+        // Adiciona na lista de itens
         PlanContent.addItem(plan)
 
-        findViewById<RecyclerView>(R.id.list).adapter.notifyDataSetChanged()
+        // Atualiza a view
+        list_rv.adapter.notifyDataSetChanged()
+        return true
     }
 
     private fun deletePlan(plan : PlanContent.PlanItem?){
         if(plan == null)
             return
-        val selection = PlanContract.PlanEntry._ID+ " = ?"
-        val selectionArgs = arrayOf(plan.id.toString())
-        PlanDbHelper(this).writableDatabase.delete(PlanContract.PlanEntry.TABLE_NAME, selection, selectionArgs)
-        PlanContent.removeItem(plan)
 
-        findViewById<RecyclerView>(R.id.list).adapter.notifyDataSetChanged()
+        // Removendo do banco de dados
+        PlanDbHelper(this).delete(plan)
+        // Removendo da lista de itens
+        PlanContent.removeItem(plan)
+        // Atualizando View
+        list_rv.adapter.notifyDataSetChanged()
     }
 }
